@@ -1,3 +1,7 @@
+# Module: Security Group
+
+Creates an AWS security group with dynamic ingress and egress rules. Rules can reference CIDR blocks or other security group IDs.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 

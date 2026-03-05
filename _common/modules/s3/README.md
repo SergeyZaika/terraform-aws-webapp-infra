@@ -1,3 +1,7 @@
+# Module: S3 Bucket
+
+Creates a general-purpose S3 bucket with server-side encryption (SSE-S3 or KMS), versioning, and configurable public-access blocking. Used for Terraform remote state storage.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 

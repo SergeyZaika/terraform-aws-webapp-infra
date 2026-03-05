@@ -1,3 +1,7 @@
+# Module: Frontend S3 Bucket
+
+Creates an S3 bucket configured as a static website origin for CloudFront. Enables public read access via a bucket policy and configures website hosting with default index/error documents.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 

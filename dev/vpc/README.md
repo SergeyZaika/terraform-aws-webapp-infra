@@ -1,3 +1,7 @@
+# dev/vpc
+
+Provisions the VPC for the dev environment using the community `terraform-aws-modules/vpc/aws` module. Outputs `vpc_id`, `public_subnets`, and `private_subnets` to S3 remote state for consumption by `dev/backend`.
+
 ## Requirements
 
 | Name | Version |

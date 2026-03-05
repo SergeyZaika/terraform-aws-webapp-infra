@@ -1,3 +1,7 @@
+# Module: EC2 Instance Profile
+
+Creates an IAM instance profile that wraps an existing IAM role, enabling EC2 instances to assume the role (e.g., for SSM Session Manager access).
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 

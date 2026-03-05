@@ -1,3 +1,7 @@
+# dev/backend
+
+Provisions EC2-based backend services for the dev environment. Reads VPC outputs from remote state (`dev/vpc`). Creates a security group, IAM role with SSM access, instance profile, and multiple EC2 instances (PostgreSQL, sub-API, Redis, Celery worker, Vault monitor).
+
 ## Requirements
 
 | Name | Version |
@@ -15,15 +19,14 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_alb"></a> [alb](#module\_alb) | ../modules/load-balancer | n/a |
-| <a name="module_auto_scaling"></a> [auto\_scaling](#module\_auto\_scaling) | ../modules/auto_scaling | n/a |
-| <a name="module_celery_ec2"></a> [celery\_ec2](#module\_celery\_ec2) | ../modules/ec2 | n/a |
-| <a name="module_ec2_instance_profile"></a> [ec2\_instance\_profile](#module\_ec2\_instance\_profile) | ../modules/ec2_profile | n/a |
-| <a name="module_iam_role"></a> [iam\_role](#module\_iam\_role) | ../modules/iam_role | n/a |
-| <a name="module_postgres_ec2"></a> [postgres\_ec2](#module\_postgres\_ec2) | ../modules/ec2 | n/a |
-| <a name="module_redis_ec2"></a> [redis\_ec2](#module\_redis\_ec2) | ../modules/ec2 | n/a |
-| <a name="module_security_group"></a> [security\_group](#module\_security\_group) | ../modules/sg | n/a |
-| <a name="module_sub_api_ec2"></a> [sub\_api\_ec2](#module\_sub\_api\_ec2) | ../modules/ec2 | n/a |
+| <a name="module_celery_ec2"></a> [celery\_ec2](#module\_celery\_ec2) | ../../_common/modules/ec2 | n/a |
+| <a name="module_ec2_instance_profile"></a> [ec2\_instance\_profile](#module\_ec2\_instance\_profile) | ../../_common/modules/ec2_profile | n/a |
+| <a name="module_iam_role"></a> [iam\_role](#module\_iam\_role) | ../../_common/modules/iam_role | n/a |
+| <a name="module_postgres_ec2"></a> [postgres\_ec2](#module\_postgres\_ec2) | ../../_common/modules/ec2 | n/a |
+| <a name="module_redis_ec2"></a> [redis\_ec2](#module\_redis\_ec2) | ../../_common/modules/ec2 | n/a |
+| <a name="module_security_group"></a> [security\_group](#module\_security\_group) | ../../_common/modules/sg | n/a |
+| <a name="module_sub_api_ec2"></a> [sub\_api\_ec2](#module\_sub\_api\_ec2) | ../../_common/modules/ec2 | n/a |
+| <a name="module_vault_monitor_ec2"></a> [vault\_monitor\_ec2](#module\_vault\_monitor\_ec2) | ../../_common/modules/ec2 | n/a |
 
 ## Resources
 
@@ -47,7 +50,7 @@
 | <a name="input_custom_managed_policies"></a> [custom\_managed\_policies](#input\_custom\_managed\_policies) | Configure custom managed policies | <pre>object({<br>    use_custom_managed_policies = bool<br>    managed_policies            = list(string)<br>  })</pre> | <pre>{<br>  "managed_policies": [],<br>  "use_custom_managed_policies": false<br>}</pre> | no |
 | <a name="input_data_volume"></a> [data\_volume](#input\_data\_volume) | Settings for the data volume | <pre>object({<br>    device_name = string<br>    volume_size = number<br>    volume_type = string<br>    iops        = number<br>    throughput  = number<br>    tags        = map(string)<br>  })</pre> | <pre>{<br>  "device_name": "/dev/sdb",<br>  "iops": 3000,<br>  "tags": {},<br>  "throughput": 125,<br>  "volume_size": 100,<br>  "volume_type": "gp2"<br>}</pre> | no |
 | <a name="input_ec2_celery_settings"></a> [ec2\_celery\_settings](#input\_ec2\_celery\_settings) | Settings for EC2 instance | <pre>object({<br>    architecture      = string<br>    os_version        = string<br>    instance_type     = string<br>    key_name          = string<br>    instance_count    = number<br>    availability_zone = string<br>    subnet_id         = string<br>    security_groups   = list(string)<br>    ebs_settings = object({<br>      volume_size = number<br>      volume_type = string<br>      iops        = number<br>      throughput  = number<br>    })<br>    is_public_ip               = bool<br>    enable_detailed_monitoring = bool<br>    terminate_protection       = bool<br>    tags                       = map(string)<br>    user_data_file             = string<br>  })</pre> | n/a | yes |
-| <a name="input_ec2_psql_settings"></a> [ec2\_psql\_settings](#input\_ec2\_psql\_settings) | Settings for EC2 instance | <pre>object({<br>    architecture      = string<br>    os_version        = string<br>    instance_type     = string<br>    key_name          = string<br>    instance_count    = number<br>    availability_zone = string<br>    subnet_id         = string<br>    security_groups   = list(string)<br>    ebs_settings = object({<br>      volume_size = number<br>      volume_type = string<br>      iops        = number<br>      throughput  = number<br>    })<br>    is_public_ip               = bool<br>    enable_detailed_monitoring = bool<br>    terminate_protection       = bool<br>    tags                       = map(string)<br>    user_data_file             = string<br>  })</pre> | <pre>{<br>  "architecture": "x86_64",<br>  "availability_zone": "",<br>  "ebs_settings": {<br>    "iops": 3000,<br>    "throughput": 125,<br>    "volume_size": 8,<br>    "volume_type": "gp3"<br>  },<br>  "enable_detailed_monitoring": false,<br>  "instance_count": 1,<br>  "instance_type": "t2.medium",<br>  "is_public_ip": true,<br>  "key_name": "my-key",<br>  "os_version": "22.04",<br>  "security_groups": [],<br>  "subnet_id": "",<br>  "tags": {<br>    "env": "dev",<br>    "project": "test"<br>  },<br>  "terminate_protection": false,<br>  "user_data_file": ""<br>}</pre> | no |
+| <a name="input_ec2_psql_settings"></a> [ec2\_psql\_settings](#input\_ec2\_psql\_settings) | Settings for EC2 instance | <pre>object({<br>    architecture      = string<br>    os_version        = string<br>    instance_type     = string<br>    key_name          = string<br>    instance_count    = number<br>    availability_zone = string<br>    subnet_id         = string<br>    security_groups   = list(string)<br>    ebs_settings = object({<br>      volume_size = number<br>      volume_type = string<br>      iops        = number<br>      throughput  = number<br>    })<br>    is_public_ip               = bool<br>    enable_detailed_monitoring = bool<br>    terminate_protection       = bool<br>    tags                       = map(string)<br>    user_data_file             = string<br>  })</pre> | <pre>{<br>  "architecture": "x86_64",<br>  "availability_zone": "",<br>  "ebs_settings": {<br>    "iops": 3000,<br>    "throughput": 125,<br>    "volume_size": 8,<br>    "volume_type": "gp3"<br>  },<br>  "enable_detailed_monitoring": false,<br>  "instance_count": 1,<br>  "instance_type": "t2.medium",<br>  "is_public_ip": true,<br>  "key_name": "my-key",<br>  "os_version": "22.04",<br>  "security_groups": [],<br>  "subnet_id": "",<br>  "tags": {<br>    "env": "dev",<br>    "project": "example"<br>  },<br>  "terminate_protection": false,<br>  "user_data_file": ""<br>}</pre> | no |
 | <a name="input_ec2_redis_settings"></a> [ec2\_redis\_settings](#input\_ec2\_redis\_settings) | Settings for EC2 instance | <pre>object({<br>    architecture      = string<br>    os_version        = string<br>    instance_type     = string<br>    key_name          = string<br>    instance_count    = number<br>    availability_zone = string<br>    subnet_id         = string<br>    security_groups   = list(string)<br>    ebs_settings = object({<br>      volume_size = number<br>      volume_type = string<br>      iops        = number<br>      throughput  = number<br>    })<br>    is_public_ip               = bool<br>    enable_detailed_monitoring = bool<br>    terminate_protection       = bool<br>    tags                       = map(string)<br>    user_data_file             = string<br>  })</pre> | n/a | yes |
 | <a name="input_ec2_settings"></a> [ec2\_settings](#input\_ec2\_settings) | Settings for ec2 instance | <pre>object({<br>      architecture        = string<br>      os_version          = string<br>      instance_type       = string<br>      volume_size         = string<br>      #  key_name = string<br>  })</pre> | n/a | yes |
 | <a name="input_ec2_sub_api_settings"></a> [ec2\_sub\_api\_settings](#input\_ec2\_sub\_api\_settings) | Settings for EC2 instance | <pre>object({<br>    architecture      = string<br>    os_version        = string<br>    instance_type     = string<br>    key_name          = string<br>    instance_count    = number<br>    availability_zone = string<br>    subnet_id         = string<br>    security_groups   = list(string)<br>    ebs_settings = object({<br>      volume_size = number<br>      volume_type = string<br>      iops        = number<br>      throughput  = number<br>    })<br>    is_public_ip               = bool<br>    enable_detailed_monitoring = bool<br>    terminate_protection       = bool<br>    tags                       = map(string)<br>    user_data_file             = string<br>  })</pre> | n/a | yes |
@@ -56,7 +59,7 @@
 | <a name="input_iam_instance_profile"></a> [iam\_instance\_profile](#input\_iam\_instance\_profile) | EC2 profile | `string` | `""` | no |
 | <a name="input_internalALB"></a> [internalALB](#input\_internalALB) | If false, then the Load Balancer will be external and available on the Internet. If true, it will only be available inside the VPC. | `bool` | `false` | no |
 | <a name="input_is_data_volume_enabled"></a> [is\_data\_volume\_enabled](#input\_is\_data\_volume\_enabled) | Flag to enable/disable the data volume | `bool` | `false` | no |
-| <a name="input_key_name"></a> [key\_name](#input\_key\_name) | The security group ID for the auto scaling group | `string` | n/a | yes |
+| <a name="input_key_name"></a> [key\_name](#input\_key\_name) | Name of the EC2 key pair | `string` | n/a | yes |
 | <a name="input_key_path"></a> [key\_path](#input\_key\_path) | Path to store keys | `string` | `"keys"` | no |
 | <a name="input_owner_id"></a> [owner\_id](#input\_owner\_id) | AWS owner ID | `string` | n/a | yes |
 | <a name="input_project_name"></a> [project\_name](#input\_project\_name) | Project name | `string` | `"myproject"` | no |

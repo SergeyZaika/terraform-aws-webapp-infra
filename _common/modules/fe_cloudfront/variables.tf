@@ -36,7 +36,7 @@ variable "cloudfront_settings" {
     restriction_type        = "none"
     geo_restriction_locations = []
     default_root_object     = ""
-    origin_ssl_protocols    = ["TLSv1.2", "TLSv1.1"]
+    origin_ssl_protocols    = ["TLSv1.2"]
     origin_read_timeout     = 30
     origin_keepalive_timeout = 5
     default_cache_behavior = {

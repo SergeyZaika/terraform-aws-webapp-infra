@@ -1,3 +1,7 @@
+# prod/vpc
+
+Provisions the VPC for the prod environment using the community `terraform-aws-modules/vpc/aws` module. Outputs `vpc_id`, `public_subnets`, and `private_subnets` to S3 remote state for consumption by `prod/backend`.
+
 ## Requirements
 
 | Name | Version |

@@ -1,3 +1,7 @@
+# Module: IAM Role
+
+Creates an IAM role with a configurable assume-role policy. Supports attaching AWS managed policies and custom policy files loaded from the `policies/` directory.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 

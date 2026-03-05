@@ -1,3 +1,7 @@
+# Terraform Backend Bootstrap
+
+Provisions an S3 bucket used as the remote backend for Terraform state files across all environments. Apply this once before any other module.
+
 ## Requirements
 
 | Name | Version |
