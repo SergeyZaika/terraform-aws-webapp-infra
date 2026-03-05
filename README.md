@@ -2,6 +2,36 @@
 
 Example AWS web application infrastructure built with Terraform. Demonstrates a multi-environment setup (dev/prod) with reusable modules for VPC, EC2, S3, CloudFront, and IAM.
 
+## What this repository demonstrates
+
+- Multi-environment Terraform architecture (dev / prod)
+- Reusable infrastructure modules
+- Remote Terraform state
+- Separation of networking, backend, and frontend layers
+- Production-oriented AWS infrastructure design
+
+## Architecture Overview
+
+```
+                    Internet
+                       |
+                  CloudFront
+                       |
+                 S3 (frontend)
+                       |
+          +------------+------------+
+          |                         |
+         VPC                 Security Groups
+          |
+  +-------+--------+--------+----------+
+  |       |        |        |          |
+ API  PostgreSQL Redis  Celery     Vault
+(EC2)   (EC2)    (EC2)  Worker    Monitor
+                         (EC2)     (EC2)
+  |
+IAM Role / Instance Profile
+```
+
 ## Repository Structure
 
 ```
